@@ -1,0 +1,17 @@
+$DbServers = Get-AzureRmSqlServer
+ 
+function Function1 {
+ 
+ForEach ($DbServer in $DbServers) {
+         
+         $DBs =Get-AzureRmSqlDatabase -ServerName $DbServer.ServerName -ResourceGroupName $DbServer.ResourceGroupName
+ 
+                ForEach ($DB in $DBs) {
+ 
+                Get-AzureRmSqlDatabaseTransparentDataEncryption -ServerName $DbServer.ServerName -ResourceGroupName $DbServer.ResourceGroupName -DatabaseName $DB.DatabaseName
+ 
+                }
+}
+}
+ 
+Function1 | Export-Csv -Path "<path/filename.csv>" -Encoding "UTF8" -NoTypeInformation 
