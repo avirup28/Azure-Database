@@ -1,0 +1,19 @@
+$DbServers = Get-AzureRmSqlServer | select ServerName , ResourceGroupName
+
+
+ 
+function Function1 {
+ 
+ForEach ($DbServer in $DbServers) {
+         
+         $DBs =Get-AzureRmSqlElasticPool -ServerName $DbServer.ServerName -ResourceGroupName $DbServer.ResourceGroupName
+ 
+                ForEach ($DB in $DBs) {
+ 
+                Get-AzureRmSqlDatabase -ServerName $DbServer.ServerName -ResourceGroupName $DbServer.ResourceGroupName | select ElasticPoolName, ServerName, ResourceGroupName, DatabaseName
+ 
+                }
+}
+}
+ 
+Function1 | Export-Csv -Path "./ep.csv" -Encoding "UTF8" -NoTypeInformation 
